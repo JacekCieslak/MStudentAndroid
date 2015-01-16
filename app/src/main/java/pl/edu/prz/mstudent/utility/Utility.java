@@ -1,4 +1,4 @@
-package pl.edu.prz.mstudent;
+package pl.edu.prz.mstudent.utility;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,8 +11,8 @@ public class Utility {
     private static Matcher matcher;
     //Email Pattern
     private static final String EMAIL_PATTERN =
-            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+            //"^[0-9]*@stud.prz.edu.pl$";
+            "^[0-9]$";
 
     /**
      * Validate Email with regular expression

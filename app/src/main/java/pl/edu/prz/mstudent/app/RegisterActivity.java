@@ -1,15 +1,11 @@
-package pl.edu.prz.mstudent;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
+package pl.edu.prz.mstudent.app;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -21,9 +17,15 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
-import pl.edu.prz.mstudent.model.Specialization;
+import pl.edu.prz.mstudent.R;
+import pl.edu.prz.mstudent.model.Course;
+import pl.edu.prz.mstudent.utility.Utility;
 
 
 /**
@@ -44,8 +46,8 @@ public class RegisterActivity extends Activity {
     EditText emailET;
     // Passwprd Edit View Object
     EditText pwdET;
-    Spinner specializationSP;
-    Spinner SpecializationGrupSP;
+    Spinner courseSP;
+    Spinner courseGrupSP;
 
 
 
@@ -55,6 +57,10 @@ public class RegisterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
+        TextView tx = (TextView)findViewById(R.id.registerTextHeader);
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),
+                "fonts/Sketchtica.ttf");
+        tx.setTypeface(custom_font);
         // Find Error Msg Text View control by ID
         errorMsg = (TextView)findViewById(R.id.register_error);
         // Find Name Edit View control by ID
@@ -65,23 +71,21 @@ public class RegisterActivity extends Activity {
         // Find Password Edit View control by ID
         pwdET = (EditText)findViewById(R.id.registerPassword);
         // Instantiate Progress Dialog object
-        specializationSP = (Spinner)findViewById(R.id.specializationSpinner);
-        SpecializationGrupSP = (Spinner)findViewById(R.id.specializtionSpinnerGroup);
+        courseSP = (Spinner)findViewById(R.id.courseSpinner);
+        courseGrupSP = (Spinner)findViewById(R.id.courseSpinnerGroup);
 
         prgDialog = new ProgressDialog(this);
-        // Set Progress Dialog Text
-        prgDialog.setMessage("Please wait...");
-        // Set Cancelable as False
+        prgDialog.setMessage("Proszę czekać...");
         prgDialog.setCancelable(false);
 
         createSpecializationListView();
 
 
-        Spinner specializtionSpinnerGroup = (Spinner) findViewById(R.id.specializtionSpinnerGroup);
+        Spinner courseSpinnerGroup = (Spinner) findViewById(R.id.courseSpinnerGroup);
         ArrayAdapter<CharSequence> adapter =  ArrayAdapter.createFromResource(this,
-                R.array.specializtionSpinnerGroup, android.R.layout.simple_spinner_item);
+                R.array.courseSpinnerGroup, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        specializtionSpinnerGroup.setAdapter(adapter);
+        courseSpinnerGroup.setAdapter(adapter);
     }
 
     /**
@@ -94,8 +98,8 @@ public class RegisterActivity extends Activity {
         String surname = surnameET.getText().toString();
         String email = emailET.getText().toString();
         String password = pwdET.getText().toString();
-        String specialization = specializationSP.getSelectedItem().toString();
-        String specializationGroup = SpecializationGrupSP.getSelectedItem().toString();
+        String course = courseSP.getSelectedItem().toString();
+        String courseGroup = courseGrupSP.getSelectedItem().toString();
 
         RequestParams params = new RequestParams();
         // When Name Edit View, Email Edit View and Password Edit View have values other than Null
@@ -107,13 +111,13 @@ public class RegisterActivity extends Activity {
                 params.put("surname", surname);
                 // Put Http parameter username with value of Email Edit View control
                 params.put("username", email);
-                params.put("specializationName",specialization);
-                params.put("specializationGroup", specializationGroup);
+                params.put("coursename",course);
+                params.put("coursegroup", courseGroup);
                 // Put Http parameter password with value of Password Edit View control
                 params.put("password", password);
-                params.put("status","false");
                 // Invoke RESTful Web Service with Http parameters
-                Toast.makeText(getApplicationContext(), params.toString(), Toast.LENGTH_LONG).show();
+
+
                 invokeWS(params);
             }
             // When Email is invalid
@@ -134,11 +138,12 @@ public class RegisterActivity extends Activity {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://mstudent.jelastic.dogado.eu/register/getspecialization", null, new AsyncHttpResponseHandler() {
+        client.get("http://mstudentservice.jelastic.dogado.eu/common/courses", new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
-            ArrayList<Specialization> specialization = new ArrayList<Specialization>();
-            ArrayList<String> specializationName = new ArrayList<String>();
+            ArrayList<Course> specialization = new ArrayList<Course>();
+            ArrayList<String> courseName = new ArrayList<String>();
             ArrayList<String> specializationGroup = new ArrayList<String>();
+
             @Override
             public void onSuccess(String response) {
                 // Hide Progress Dialog
@@ -152,32 +157,21 @@ public class RegisterActivity extends Activity {
                     for (int i = 0; i < obj.length(); i++) {
                         jsonobject = obj.getJSONObject(i);
 
-                        Specialization spec = new Specialization();
+                        Course spec = new Course();
                         spec.setGroupSize(Integer.parseInt(jsonobject.optString("group")));
                         spec.setName(jsonobject.optString("name"));
 
-                         specializationName.add(jsonobject.optString("name"));
+                        courseName.add(jsonobject.optString("name"));
 
 
-
-                    //    specializationGroup.add(jsonobject.optString("group"));
-         //               specialization.add(spec);
                     }
 
-                    Spinner specializationSpinner = (Spinner) findViewById(R.id.specializationSpinner);
-                    specializationSpinner
+                    Spinner courseSpinner = (Spinner) findViewById(R.id.courseSpinner);
+                    courseSpinner
                             .setAdapter(new ArrayAdapter<String>(RegisterActivity.this,
                                     android.R.layout.simple_spinner_dropdown_item,
-                                    specializationName));
+                                    courseName));
 
-//                    Spinner specializationSpinnerGroup = (Spinner) findViewById(R.id.specializtionSpinnerGroup);
-//                    specializationSpinnerGroup
-//                            .setAdapter(new ArrayAdapter<String>(RegisterActivity.this,
-//                                    android.R.layout.simple_spinner_dropdown_item,
-//                                    specializationGroup));
-
-
-//                    Toast.makeText(getApplicationContext(), specializationName.toString(), Toast.LENGTH_LONG).show();
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -210,29 +204,33 @@ public class RegisterActivity extends Activity {
     }
 
 
-    public void invokeWS(RequestParams params){
+    public void invokeWS(final RequestParams params){
         // Show Progress Dialog
         prgDialog.show();
+
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://mstudent.jelastic.dogado.eu/register/doregister",params ,new AsyncHttpResponseHandler() {
+        Log.d("app", params.toString());
+        client.post("http://mstudentservice.jelastic.dogado.eu/register/doregister", params, new AsyncHttpResponseHandler() {
+
             // When the response returned by REST has Http response code '200'
             @Override
             public void onSuccess(String response) {
+
                 // Hide Progress Dialog
                 prgDialog.hide();
                 try {
                     // JSON Object
                     JSONObject obj = new JSONObject(response);
                     // When the JSON response has status boolean value assigned with true
-                    if(obj.getBoolean("status")){
+                    if (obj.getBoolean("status")) {
                         // Set Default Values for Edit View controls
                         setDefaultValues();
                         // Display successfully registered message using Toast
                         Toast.makeText(getApplicationContext(), "You are successfully registered!", Toast.LENGTH_LONG).show();
                     }
                     // Else display error message
-                    else{
+                    else {
                         errorMsg.setText(obj.getString("error_msg"));
                         Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
@@ -243,6 +241,7 @@ public class RegisterActivity extends Activity {
 
                 }
             }
+
             // When the response returned by REST has Http response code other than '200'
             @Override
             public void onFailure(int statusCode, Throwable error,
@@ -250,15 +249,15 @@ public class RegisterActivity extends Activity {
                 // Hide Progress Dialog
                 prgDialog.hide();
                 // When Http response code is '404'
-                if(statusCode == 404){
+                if (statusCode == 404) {
                     Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code is '500'
-                else if(statusCode == 500){
+                else if (statusCode == 500) {
                     Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code other than 404, 500
-                else{
+                else {
                     Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
             }

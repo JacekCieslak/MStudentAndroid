@@ -1,11 +1,9 @@
-package pl.edu.prz.mstudent;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+package pl.edu.prz.mstudent.app;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -15,6 +13,13 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import pl.edu.prz.mstudent.R;
+import pl.edu.prz.mstudent.utility.Utility;
+
 /**
  *
  * Login Activity Class
@@ -29,10 +34,20 @@ public class LoginActivity extends Activity {
     EditText emailET;
     // Passwprd Edit View Object
     EditText pwdET;
+
+    UserSessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        TextView tx = (TextView)findViewById(R.id.loginTextHeader);
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),
+                "fonts/Sketchtica.ttf");
+        tx.setTypeface(custom_font);
+
+        session = new UserSessionManager(getApplicationContext());
+
         // Find Error Msg Text View control by ID
         errorMsg = (TextView)findViewById(R.id.login_error);
         // Find Email Edit View control by ID
@@ -90,7 +105,7 @@ public class LoginActivity extends Activity {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://mstudent.jelastic.dogado.eu/login/dologin",params ,new AsyncHttpResponseHandler() {
+        client.get("http://mstudentservice.jelastic.dogado.eu/login/dologin",params ,new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
             @Override
             public void onSuccess(String response) {
@@ -103,6 +118,7 @@ public class LoginActivity extends Activity {
                     if(obj.getBoolean("status")){
                         Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
                         // Navigate to Home screen
+                        session.createUserLoginSession(emailET.getText().toString());
                         navigatetoHomeActivity();
                     }
                     // Else display error message
@@ -121,7 +137,6 @@ public class LoginActivity extends Activity {
             @Override
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
-                // Hide Progress Dialog
                 prgDialog.hide();
                 // When Http response code is '404'
                 if(statusCode == 404){

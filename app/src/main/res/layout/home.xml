@@ -10,15 +10,25 @@
         android:layout_height="match_parent" >
 
 
-
-        <TextView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_gravity="fill_vertical"
-            android:layout_marginTop="20pt"
-            android:gravity="center_horizontal"
-            android:text="Welcome User"
-            android:textSize="25dip" />
+            android:layout_gravity="center_horizontal|top">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="117dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/textHome"
+                android:layout_gravity="left|top" />
+
+        </LinearLayout>
 
     </FrameLayout>
 
@@ -36,7 +46,7 @@
          the container. -->
     <fragment android:id="@+id/navigation_drawer"
         android:layout_width="@dimen/navigation_drawer_width" android:layout_height="match_parent"
-        android:layout_gravity="start" android:name="pl.edu.prz.mstudent.NavigationDrawerFragment"
+        android:layout_gravity="start" android:name="pl.edu.prz.mstudent.app.NavigationDrawerFragment"
         tools:layout="@layout/fragment_navigation_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

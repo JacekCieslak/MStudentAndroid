@@ -6,131 +6,169 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5dip" >
+        android:orientation="vertical">
 
-        <!-- View Title Label -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-        <TextView
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="#ffffffff">
+
+                <ImageView
+                    android:layout_width="82dp"
+                    android:layout_height="79dp"
+                    android:id="@+id/imageView2"
+                    android:src="@drawable/logo" />
+
+                <TextView
+                    android:layout_width="333dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/registerTextHeader"
+                    android:singleLine="false"
+                    android:text="@string/introText"
+                    android:textColor="#ff0f76bd"
+                    android:textSize="45dp"
+                    android:textStyle="bold"
+                    android:autoText="false"
+                    android:padding="20dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip"
-            android:text="@string/register_title"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-        <!-- Name Label -->
+            android:orientation="vertical"
+            android:padding="5dip"
+            android:background="#ffffffff">
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/name" />
-        <!-- Name TextField -->
+            <!-- View Title Label -->
 
-        <EditText
-            android:id="@+id/registerName"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:hint="Wprowadź imię"/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
+                android:text="@string/register_title"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+            <!-- Name Label -->
 
-        <!-- Email Label -->
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/name" />
+            <!-- Name TextField -->
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/surname" />
+            <EditText
+                android:id="@+id/registerName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Wprowadź imię"/>
 
-        <EditText
-            android:id="@+id/registerSurname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Wprowadź nazwisko" />
+            <!-- Email Label -->
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/email" />
-        <!-- Email TextField -->
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/surname" />
 
-        <EditText
-            android:id="@+id/registerEmail"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="Wprowadź studencki Email "
-            android:inputType="textEmailAddress" />
+            <EditText
+                android:id="@+id/registerSurname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Wprowadź nazwisko" />
 
-        <!-- Password Label -->
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/email" />
+            <!-- Email TextField -->
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/specialiaztion"
-            android:id="@+id/textView" />
+            <EditText
+                android:id="@+id/registerEmail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Wprowadź studencki Email "
+                android:inputType="textEmailAddress" />
 
-        <Spinner
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/specializationSpinner" />
+            <!-- Password Label -->
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/specializationGroup" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/specialiaztion"
+                android:id="@+id/textView" />
 
-        <Spinner
-            android:id="@+id/specializtionSpinnerGroup"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            />
+            <Spinner
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/courseSpinner" />
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dip"
-            android:text="@string/pwd" />
-        <!-- Password TextField -->
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/specializationGroup" />
 
-        <EditText
-            android:id="@+id/registerPassword"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="Wprowadz hasło"
-            android:inputType="textPassword" />
+            <Spinner
+                android:id="@+id/courseSpinnerGroup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                />
 
-        <!-- Error message -->
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dip"
+                android:text="@string/pwd" />
+            <!-- Password TextField -->
 
-        <TextView
-            android:id="@+id/register_error"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dip"
-            android:textColor="#ffe30000"
-            android:textStyle="bold" />
+            <EditText
+                android:id="@+id/registerPassword"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Wprowadz hasło"
+                android:inputType="textPassword" />
 
-        <Button
-            android:id="@+id/btnRegister"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:background="#ff6347"
-            android:onClick="registerUser"
-            android:text="@string/btnRegister"
-            android:textColor="#fff" />
+            <!-- Error message -->
 
-        <!-- Link to Login Screen -->
+            <TextView
+                android:id="@+id/register_error"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dip"
+                android:textColor="#ffe30000"
+                android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnLinkToLoginScreen"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:background="@null"
-            android:onClick="navigatetoLoginActivity"
-            android:text="Logowanie"
-            android:textColor="#228b22"
-            android:textStyle="bold" />
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:background="#ff21aee6"
+                android:onClick="registerUser"
+                android:text="@string/btnRegister"
+                android:textColor="#fff" />
 
+            <!-- Link to Login Screen -->
 
-
+            <Button
+                android:id="@+id/btnLinkToLoginScreen"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:background="@null"
+                android:onClick="navigatetoLoginActivity"
+                android:text="Logowanie"
+                android:textColor="#228b22"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
