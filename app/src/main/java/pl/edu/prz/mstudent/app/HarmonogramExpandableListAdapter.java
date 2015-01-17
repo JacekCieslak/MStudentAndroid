@@ -12,16 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import pl.edu.prz.mstudent.R;
-import pl.edu.prz.mstudent.model.Group;
+import pl.edu.prz.mstudent.model.Harmonogram;
 import pl.edu.prz.mstudent.model.HarmonogramChild;
 
 public class HarmonogramExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private final SparseArray<Group> groups;
+    private final SparseArray<Harmonogram> groups;
     public LayoutInflater inflater;
     public Activity activity;
 
-    public HarmonogramExpandableListAdapter(Activity act, SparseArray<Group> groups) {
+    public HarmonogramExpandableListAdapter(Activity act, SparseArray<Harmonogram> groups) {
         activity = act;
         this.groups = groups;
         inflater = act.getLayoutInflater();
@@ -47,14 +47,14 @@ public class HarmonogramExpandableListAdapter extends BaseExpandableListAdapter 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.harmonogram_details, null);
         }
-        place = (TextView) convertView.findViewById(R.id.textView6);
-        place.setText(harmonogramChild.audytorium);
-
-        audytorium = (TextView) convertView.findViewById(R.id.textView8);
+        audytorium = (TextView) convertView.findViewById(R.id.audytoriumText);
         audytorium.setText(harmonogramChild.audytorium);
 
-        info = (TextView) convertView.findViewById(R.id.textView11);
-        info.setText(harmonogramChild.audytorium);
+        info = (TextView) convertView.findViewById(R.id.infoText);
+        if(!harmonogramChild.info.equals(""))
+            info.setText(harmonogramChild.info);
+        else
+            info.setText("Brak dodatkowych informacji.");
 
 
 
@@ -104,20 +104,20 @@ public class HarmonogramExpandableListAdapter extends BaseExpandableListAdapter 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.harmonogram_group, null);
         }
-        Group group = (Group) getGroup(groupPosition);
+        Harmonogram harmonogram = (Harmonogram) getGroup(groupPosition);
 
 
         TextView title = null;
         TextView hour = null;
         TextView place = null;
         title = (TextView) convertView.findViewById(R.id.harmonogramTitle);
-        title.setText(group.string);
+        title.setText(harmonogram.course);
 
         hour = (TextView) convertView.findViewById(R.id.sharmonogramHour);
-        hour.setText(group.string);
+        hour.setText(harmonogram.hour);
 
         place = (TextView) convertView.findViewById(R.id.harmonogramPlace);
-        place.setText(group.string);
+        place.setText(harmonogram.place);
 
 //        ImageView image = (ImageView) convertView.findViewById(R.id.harmonogramIcon);
 //        image.setImageResource(R.drawable.wyklad);
@@ -133,12 +133,14 @@ public class HarmonogramExpandableListAdapter extends BaseExpandableListAdapter 
 ////        place.setText(group.place);
 //
         ImageView image = (ImageView) convertView.findViewById(R.id.harmonogramIcon);
-        if(group.string .equals("Konsultacje"))
+        if(harmonogram.course .equals("Konsultacje"))
             image.setImageResource(R.drawable.konsultacje);
-        else if(group.string.equals("Wykład"))
+        else if(harmonogram.course.equals("Wykład"))
             image.setImageResource(R.drawable.wyklad);
-        else if(group.string.equals("Laboratorium"))
+        else if(harmonogram.course.equals("Laboratorium"))
             image.setImageResource(R.drawable.laboratorium);
+        else
+            image.setVisibility(View.GONE);
          return convertView;
     }
 

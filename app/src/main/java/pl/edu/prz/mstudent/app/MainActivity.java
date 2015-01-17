@@ -8,7 +8,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +20,7 @@ import java.util.HashMap;
 import pl.edu.prz.mstudent.R;
 
 
-public class HomeActivity extends ActionBarActivity
+public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
 
@@ -40,7 +39,7 @@ public class HomeActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home);
+        setContentView(R.layout.main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -70,7 +69,6 @@ public class HomeActivity extends ActionBarActivity
         switch (position){
             case 0:
                 mTitle = getString(R.string.home);
-                Log.i("Fragment:", "home");
                 break;
             case 1:
                 mTitle = getString(R.string.harmonogram);
@@ -151,6 +149,8 @@ public class HomeActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -186,17 +186,17 @@ public class HomeActivity extends ActionBarActivity
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            ((HomeActivity) activity).onSectionAttached(
+            ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
 
 
     }
-    @Override
-    public void onBackPressed()
-    {
+        @Override
+        public void onBackPressed()
+        {
 
-    }
+        }
 
 
 

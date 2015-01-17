@@ -28,10 +28,6 @@ import pl.edu.prz.mstudent.model.Course;
 import pl.edu.prz.mstudent.utility.Utility;
 
 
-/**
- *
- * Register Activity Class
- */
 
 public class RegisterActivity extends Activity {
     // Progress Dialog Object
@@ -88,6 +84,10 @@ public class RegisterActivity extends Activity {
         courseSpinnerGroup.setAdapter(adapter);
     }
 
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+    }
     /**
      * Method gets triggered when Register button is clicked
      *

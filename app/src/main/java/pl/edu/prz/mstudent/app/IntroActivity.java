@@ -11,9 +11,7 @@ import java.util.ArrayList;
 
 import pl.edu.prz.mstudent.R;
 
-/**
- * Created by Jaca on 2015-01-10.
- */
+
 public class IntroActivity extends Activity {
 
     private static ArrayList<Activity> activities=new ArrayList<Activity>();

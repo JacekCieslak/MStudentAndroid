@@ -1,61 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:baselineAligned="false">
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/hLayout">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:background="#f8000000"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dip"/>
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Miejsce:"
-            android:id="@+id/textView5" />
-
-        <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/textView6" />
+            android:text="Audytorium"
+            android:id="@+id/textView5"
+            android:textIsSelectable="false"
+            android:textStyle="bold" />
+        <View
+            android:background="#f8000000"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dip"/>
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Audytorium:"
-            android:id="@+id/textView7" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/audytoriumText"
+            android:layout_gravity="center_horizontal" />
+
+        <View
+            android:background="#f8000000"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dip"/>
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/textView8" />
+            android:text="Dodatkowe informacje"
+            android:id="@+id/textView6"
+            android:textStyle="bold" />
+        <View
+            android:background="#f8000000"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dip"/>
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Dodatkowe informacje:"
-            android:id="@+id/textView10" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/infoText" />
+        <View
+            android:background="#f8000000"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dip"/>
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/textView11" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/textView9" />
 
     </LinearLayout>
 </LinearLayout>

@@ -20,11 +20,7 @@ import org.json.JSONObject;
 import pl.edu.prz.mstudent.R;
 import pl.edu.prz.mstudent.utility.Utility;
 
-/**
- *
- * Login Activity Class
- *
- */
+
 public class LoginActivity extends Activity {
     // Progress Dialog Object
     ProgressDialog prgDialog;
@@ -57,7 +53,7 @@ public class LoginActivity extends Activity {
         // Instantiate Progress Dialog object
         prgDialog = new ProgressDialog(this);
         // Set Progress Dialog Text
-        prgDialog.setMessage("Please wait...");
+        prgDialog.setMessage("Proszę Czekać...");
         // Set Cancelable as False
         prgDialog.setCancelable(false);
     }
@@ -158,7 +154,7 @@ public class LoginActivity extends Activity {
      * Method which navigates from Login Activity to Home Activity
      */
     public void navigatetoHomeActivity(){
-        Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
+        Intent homeIntent = new Intent(getApplicationContext(),MainActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
     }

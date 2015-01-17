@@ -19,15 +19,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pl.edu.prz.mstudent.R;
-import pl.edu.prz.mstudent.model.Group;
+import pl.edu.prz.mstudent.model.Harmonogram;
 import pl.edu.prz.mstudent.model.HarmonogramChild;
 
-/**
- * Created by Jaca on 2015-01-11.
- */
+
 public class MessageFragment extends Fragment {
     View rootview;
-    SparseArray<Group> groups = new SparseArray<Group>();
+    SparseArray<Harmonogram> groups = new SparseArray<Harmonogram>();
     ProgressDialog prgDialog;
     
     @Nullable
