@@ -26,7 +26,7 @@ public class IntroActivity extends Activity {
         Typeface custom_font = Typeface.createFromAsset(getAssets(),
                 "fonts/Sketchtica.ttf");
         tx.setTypeface(custom_font);
-        new CountDownTimer(1000, 1000) {
+        new CountDownTimer(5000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
             }
@@ -34,7 +34,6 @@ public class IntroActivity extends Activity {
             @Override
             public void onFinish() {
                 Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
-                // Clears History of Activity
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(loginIntent);
                 finish();

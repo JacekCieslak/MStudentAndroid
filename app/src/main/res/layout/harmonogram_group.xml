@@ -51,4 +51,15 @@
         android:layout_alignRight="@+id/harmonogramTitle"
         android:layout_alignEnd="@+id/harmonogramTitle" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:textSize="10sp"
+        android:id="@+id/harmonogramWeek"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/sharmonogramHour"
+        android:layout_alignEnd="@+id/sharmonogramHour" />
+
 </RelativeLayout>

@@ -4,25 +4,25 @@
     android:padding="6dip" >
 
     <ImageView
-        android:id="@+id/gradeIcon"
+        android:id="@+id/documentDetailsIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="6dip"
+        android:layout_marginLeft="36dip"
         android:contentDescription="TODO"
         android:src="@drawable/ic_launcher" />
 
     <TextView
-        android:id="@+id/gradeTitle"
+        android:id="@+id/documentDetailsTitle"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/gradeIcon"
+        android:layout_toRightOf="@id/documentDetailsIcon"
         android:gravity="center_vertical"
         android:text="Example application"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textSize="16sp" />
 
 </RelativeLayout>

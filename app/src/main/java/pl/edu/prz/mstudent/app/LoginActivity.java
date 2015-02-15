@@ -17,6 +17,9 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import pl.edu.prz.mstudent.R;
 import pl.edu.prz.mstudent.utility.Utility;
 
@@ -43,106 +46,67 @@ public class LoginActivity extends Activity {
         tx.setTypeface(custom_font);
 
         session = new UserSessionManager(getApplicationContext());
-
-        // Find Error Msg Text View control by ID
         errorMsg = (TextView)findViewById(R.id.login_error);
-        // Find Email Edit View control by ID
         emailET = (EditText)findViewById(R.id.loginEmail);
-        // Find Password Edit View control by ID
         pwdET = (EditText)findViewById(R.id.loginPassword);
-        // Instantiate Progress Dialog object
         prgDialog = new ProgressDialog(this);
-        // Set Progress Dialog Text
         prgDialog.setMessage("Proszę Czekać...");
-        // Set Cancelable as False
         prgDialog.setCancelable(false);
     }
 
-    /**
-     * Method gets triggered when Login button is clicked
-     *
-     * @param view
-     */
     public void loginUser(View view){
-        // Get Email Edit View Value
         String email = emailET.getText().toString();
-        // Get Password Edit View Value
-        String password = pwdET.getText().toString();
-        // Instantiate Http Request Param Object
+        String password = md5( pwdET.getText().toString());
         RequestParams params = new RequestParams();
-        // When Email Edit View and Password Edit View have values other than Null
         if(Utility.isNotNull(email) && Utility.isNotNull(password)){
-            // When Email entered is Valid
-            if(Utility.validate(email)){
-                // Put Http parameter username with value of Email Edit View control
-                params.put("username", email);
-                // Put Http parameter password with value of Password Edit Value control
+            if(Utility.validateUserName(email)){
+                params.put("username", email+"@stud.prz.edu.pl");
                 params.put("password", password);
-                // Invoke RESTful Web Service with Http parameters
                 invokeWS(params);
             }
-            // When Email is invalid
             else{
-                Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Prosze podać poprawny numer indeksu!", Toast.LENGTH_LONG).show();
             }
         } else{
-            Toast.makeText(getApplicationContext(), "Please fill the form, don't leave any field blank", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Uzupełnij wszystkie pola.", Toast.LENGTH_LONG).show();
         }
 
     }
 
-    /**
-     * Method that performs RESTful webservice invocations
-     *
-     * @param params
-     */
     public void invokeWS(RequestParams params){
-        // Show Progress Dialog
         prgDialog.show();
-        // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("http://mstudentservice.jelastic.dogado.eu/login/dologin",params ,new AsyncHttpResponseHandler() {
-            // When the response returned by REST has Http response code '200'
             @Override
             public void onSuccess(String response) {
-                // Hide Progress Dialog
                 prgDialog.hide();
                 try {
-                    // JSON Object
                     JSONObject obj = new JSONObject(response);
-                    // When the JSON response has status boolean value assigned with true
                     if(obj.getBoolean("status")){
-                        Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
-                        // Navigate to Home screen
+                        Toast.makeText(getApplicationContext(), "Jesteś zlaogowany!", Toast.LENGTH_LONG).show();
                         session.createUserLoginSession(emailET.getText().toString());
                         navigatetoHomeActivity();
                     }
-                    // Else display error message
                     else{
                         errorMsg.setText(obj.getString("error_msg"));
                         Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
 
                 }
             }
-            // When the response returned by REST has Http response code other than '200'
             @Override
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
                 prgDialog.hide();
-                // When Http response code is '404'
                 if(statusCode == 404){
                     Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
                 }
-                // When Http response code is '500'
                 else if(statusCode == 500){
                     Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
                 }
-                // When Http response code other than 404, 500
                 else{
                     Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
@@ -150,24 +114,37 @@ public class LoginActivity extends Activity {
         });
     }
 
-    /**
-     * Method which navigates from Login Activity to Home Activity
-     */
     public void navigatetoHomeActivity(){
         Intent homeIntent = new Intent(getApplicationContext(),MainActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
     }
 
-    /**
-     * Method gets triggered when Register button is clicked
-     *
-     * @param view
-     */
     public void navigatetoRegisterActivity(View view){
         Intent loginIntent = new Intent(getApplicationContext(),RegisterActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(loginIntent);
     }
+    public static final String md5(final String s) {
+        final String MD5 = "MD5";
+        try {
+            MessageDigest digest = java.security.MessageDigest
+                    .getInstance(MD5);
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
 
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest) {
+                String h = Integer.toHexString(0xFF & aMessageDigest);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 }

@@ -1,16 +1,19 @@
 package pl.edu.prz.mstudent.app;
 
-import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,6 +63,7 @@ public class NavigationDrawerFragment extends Fragment {
     private LinearLayout mLinearLayout;
     private TextView mTextView;
     private View mFragmentContainerView;
+    private String username;
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
@@ -100,9 +104,14 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+//        session = new UserSessionManager(getActivity().getApplicationContext());
+//        HashMap<String, String> user = session.getUserDetails();
+//        username = user.get(UserSessionManager.KEY_EMAIL);
 
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
+//        mTextView = (TextView) inflater.inflate(R.layout.fragment_home,container, false);
+//        mTextView.setText("JEST");
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -117,11 +126,14 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.home),
                         getString(R.string.harmonogram),
                         getString(R.string.grade),
-                        getString(R.string.message),
+                        getString(R.string.materials),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+//        mDrawerListView.setBackgroundColor(0xff0f76b);
         return mDrawerListView;
     }
+
+
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
@@ -144,6 +156,8 @@ public class NavigationDrawerFragment extends Fragment {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#ff21aee6"));
+        actionBar.setBackgroundDrawable(colorDrawable);
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
@@ -261,10 +275,12 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.logout) {
-            Toast.makeText(getActivity(), "Wylogowanie.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Zostałeś wylogowany.", Toast.LENGTH_SHORT).show();
 
-            session.logoutUser();
-
+          //  session.logoutUser();
+            Intent loginIntent = new Intent(getActivity().getApplicationContext(),LoginActivity.class);
+            loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(loginIntent);
             return true;
         }
 
@@ -280,6 +296,9 @@ public class NavigationDrawerFragment extends Fragment {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setTitle(R.string.app_name);
+        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#ff21aee6"));
+        actionBar.setBackgroundDrawable(colorDrawable);
+
     }
 
     private ActionBar getActionBar() {

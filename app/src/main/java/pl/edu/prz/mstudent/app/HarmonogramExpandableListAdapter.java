@@ -110,6 +110,7 @@ public class HarmonogramExpandableListAdapter extends BaseExpandableListAdapter 
         TextView title = null;
         TextView hour = null;
         TextView place = null;
+        TextView week = null;
         title = (TextView) convertView.findViewById(R.id.harmonogramTitle);
         title.setText(harmonogram.course);
 
@@ -119,19 +120,9 @@ public class HarmonogramExpandableListAdapter extends BaseExpandableListAdapter 
         place = (TextView) convertView.findViewById(R.id.harmonogramPlace);
         place.setText(harmonogram.place);
 
-//        ImageView image = (ImageView) convertView.findViewById(R.id.harmonogramIcon);
-//        image.setImageResource(R.drawable.wyklad);
-        //e((CheckedTextView) convertView).setChecked(isExpanded);
-//        TextView text = null;
-////        CheckedTextView text = (CheckedTextView)   convertView.findViewById(R.id.textView1);
-////        text.setText(group.string);
-//        text  = (TextView) convertView.findViewById(R.id.firstLine);
-//        text.setText("asda");
-////        TextView hour = (TextView) convertView.findViewById(R.id.hourView);
-////        hour.setText(group.place);
-////        TextView place = (TextView) convertView.findViewById(R.id.secondLine);
-////        place.setText(group.place);
-//
+        week = (TextView) convertView.findViewById(R.id.harmonogramWeek);
+        week.setText(harmonogram.week);
+
         ImageView image = (ImageView) convertView.findViewById(R.id.harmonogramIcon);
         if(harmonogram.course .equals("Konsultacje"))
             image.setImageResource(R.drawable.konsultacje);

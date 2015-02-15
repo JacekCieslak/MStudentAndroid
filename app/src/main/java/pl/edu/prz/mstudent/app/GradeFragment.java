@@ -40,9 +40,14 @@ public class GradeFragment extends Fragment {
         rootview = inflater.inflate(R.layout.grade, container, false);
         session = new UserSessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-         username = user.get(UserSessionManager.KEY_EMAIL);
-        TextView gradeTextView = (TextView) rootview.findViewById(R.id.gradeTextView);
-        gradeTextView.setText("Oceny: "+username);
+        username = user.get(UserSessionManager.KEY_EMAIL);
+        TextView gradeTextView = (TextView) rootview.findViewById(R.    id.gradeTextView);
+        gradeTextView.setText("Oceny użytkownika: "+username+"@stud.prz.edu.pl");
+
+        prgDialog = new ProgressDialog(getActivity());
+        prgDialog.setMessage("Proszę Czekać...");
+        prgDialog.setCancelable(false);
+
         createGradeListView();
         return rootview;
     }
@@ -50,20 +55,16 @@ public class GradeFragment extends Fragment {
 
     public void createGradeListView(){
 
-//        prgDialog.show();
+        prgDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://mstudentservice.jelastic.dogado.eu/user/grade/getgrade?username="+username, new AsyncHttpResponseHandler() {
+        client.get("http://mstudentservice.jelastic.dogado.eu/user/grade/getgrade?username="+username+"@stud.prz.edu.pl", new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(String response) {
                 boolean stan = true;
-    //            prgDialog.hide();
-                try {
-
-
+                prgDialog.hide();
+                    try {
                     JSONObject jsonobject;
-                   // groups.clear();
-
                     JSONArray obj = new JSONArray(response);
                     int size = obj.length();
                     if (obj.length() != 0) {
@@ -79,12 +80,11 @@ public class GradeFragment extends Fragment {
 
                         listView.setAdapter(adapter);
                     }else {
-//                        Harmonogram harmonogram = new Harmonogram("Brak zajęć tego dnia.","","");
-//                        groups.append(0, harmonogram);
-//                        ExpandableListView listView = (ExpandableListView) rootview.findViewById(R.id.harmonogramExpandableListView);
-//                        HarmonogramExpandableListAdapter adapter = new HarmonogramExpandableListAdapter(getActivity(), groups);
-//
-//                        listView.setAdapter(adapter);
+                       Grade grade = new Grade("Brak ocen.",0);
+                        listGrade.add(0, grade);
+                        ListView listView = (ListView) rootview.findViewById(R.id.gradeListView);
+                        GradeListApdapter adapter = new GradeListApdapter(getActivity().getApplicationContext(), listGrade);
+                        listView.setAdapter(adapter);
                     }
                 }catch(JSONException e){
                     // TODO Auto-generated catch block

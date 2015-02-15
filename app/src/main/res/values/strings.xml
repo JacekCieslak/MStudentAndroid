@@ -5,7 +5,9 @@
     <string name="home">Home</string>
     <string name="harmonogram">Harmonogram</string>
     <string name="grade">Oceny</string>
+    <string name="materials">Materiały</string>
     <string name="message">Wiadomość</string>
+    <string name="user">Użytkownik:</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="logout">Wyloguj</string>
@@ -23,6 +25,7 @@
     <string name="specializationGroup">Grupa</string>
     <string name="pwd">Hasło</string>
     <string name="btnRegister">Zarejestruj</string>
+    <string name="downloadButton">Pobierz</string>
     <string name="introText">MStudent</string>
     <string name="hello_world">Hello world!</string>
     <string name="day">Dzień tygodnia</string>
@@ -46,7 +49,9 @@
         <item>15</item>
     </string-array>
 
-
+//documents string
+    <string name="infoDocuments">Materiały związane z przedmiotem: </string>
+    <string name="titleExpandableListView">Materiały</string>
 
 
 

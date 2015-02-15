@@ -27,19 +27,20 @@ public class MessageFragment extends Fragment {
     View rootview;
     SparseArray<Harmonogram> groups = new SparseArray<Harmonogram>();
     ProgressDialog prgDialog;
+    UserSessionManager session;
     
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         rootview = inflater.inflate(R.layout.mesage, container, false);
-
+        session = new UserSessionManager(getActivity().getApplicationContext());
 
 //        ProgressDialog prgDialog = new ProgressDialog(getActivity().getApplicationContext());
 //        prgDialog.setMessage("Proszę czekać...");
 //        prgDialog.setCancelable(false);
 
 
-        createDayHarmonogram();
+
         
         return rootview;
     }

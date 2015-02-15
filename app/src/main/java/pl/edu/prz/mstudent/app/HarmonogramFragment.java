@@ -39,13 +39,6 @@ public class HarmonogramFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Spinner daysSpinner = (Spinner) getView().findViewById(R.id.days);
-//        String[] items = new String[] {
-//                "Poniedziałek", "Wtorek", "środa", "Czwartek", "Piątek"};
-//
-//        ArrayAdapter< String > adapter =
-//                new ArrayAdapter < String > (getActivity(), android.R.layout.simple_spinner_item, items);
-//        daysSpinner.setAdapter(adapter);
     }
 
     @Nullable
@@ -86,20 +79,6 @@ public class HarmonogramFragment extends Fragment {
             }
 
         });
-
-        //        ListView list = (ListView) rootview.findViewById(R.id.listView);
-//        list.setAdapter(adapter);
-//        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-//                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-//                "Linux", "OS/2" };
-//
-//        ListView listView = (ListView) rootview.findViewById(R.id.listView);
-//
-//        ArrayAdapter<String> adapterListView = new ArrayAdapter<String>(getActivity().getApplicationContext(),
-//                R.layout.harmonogram_list_view, R.id.secondLine, values);
-//        listView.setAdapter(adapterListView);
-
-
         return rootview;
     }
 
@@ -121,7 +100,6 @@ public class HarmonogramFragment extends Fragment {
                     groups.clear();
 
                     JSONArray obj = new JSONArray(response);
-                    int size = obj.length();
                     if (obj.length() != 0) {
                         for (int i = 0; i < obj.length(); i++) {
                             jsonobject = obj.getJSONObject(i);
@@ -131,7 +109,7 @@ public class HarmonogramFragment extends Fragment {
                                     jsonobject.optString("information")
                             );
                             int plusOneHour = Integer.parseInt(jsonobject.optString("hour"))+1;
-                            Harmonogram harmonogram = new Harmonogram(jsonobject.optString("classes"), jsonobject.optString("place"), "Godz. "+ jsonobject.optString("hour")+" - "+Integer.toString(plusOneHour));
+                            Harmonogram harmonogram = new Harmonogram(jsonobject.optString("classes"), jsonobject.optString("place"), "Godz. "+ jsonobject.optString("hour")+" - "+Integer.toString(plusOneHour),jsonobject.optString("week"));
                             harmonogram.children.add(harmonogramChild);
                             groups.append(i, harmonogram);
 
@@ -142,7 +120,7 @@ public class HarmonogramFragment extends Fragment {
 
                         }
                     }else {
-                        Harmonogram harmonogram = new Harmonogram("Brak zajęć tego dnia.","","");
+                        Harmonogram harmonogram = new Harmonogram("Brak zajęć tego dnia.","","","");
                         groups.append(0, harmonogram);
                         ExpandableListView listView = (ExpandableListView) rootview.findViewById(R.id.harmonogramExpandableListView);
                         HarmonogramExpandableListAdapter adapter = new HarmonogramExpandableListAdapter(getActivity(), groups);
@@ -150,7 +128,6 @@ public class HarmonogramFragment extends Fragment {
                         listView.setAdapter(adapter);
                     }
                     }catch(JSONException e){
-                        // TODO Auto-generated catch block
                         Toast.makeText(getActivity().getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
@@ -160,7 +137,7 @@ public class HarmonogramFragment extends Fragment {
             @Override
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
-                //        prgDialog.hide();
+                        prgDialog.hide();
                 if (statusCode == 404) {
                     Toast.makeText(getActivity().getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
                 }

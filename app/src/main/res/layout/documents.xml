@@ -18,26 +18,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Informacje o planowanych wykładach, seminariach i konsultacjach"
-            android:id="@+id/textView2" />
+            android:text="@string/infoDocuments"
+            android:id="@+id/documentsInfoTextView" />
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/documentsTextView" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dip"
-            android:text="@string/day"
+            android:text="@string/titleExpandableListView"
             android:id="@+id/textView3" />
-        <View
-        android:background="#f8000000"
-        android:layout_width = "fill_parent"
-        android:layout_height="1dip"/>
 
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/days"
-            android:layout_gravity="center_horizontal"
-            android:longClickable="true" />
         <View
             android:background="#f8000000"
             android:layout_width = "fill_parent"
@@ -46,7 +45,7 @@
         <ExpandableListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/harmonogramExpandableListView"
+            android:id="@+id/documentExpandableListView"
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>

@@ -7,13 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.HashMap;
 
@@ -50,7 +48,7 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        TextView tHome = (TextView) findViewById(R.id.textHome);
+      //  TextView tHome = (TextView) findViewById(R.id.textHome);
         session = new UserSessionManager(getApplicationContext());
 
         if(session.checkLogin())
@@ -59,7 +57,7 @@ public class MainActivity extends ActionBarActivity
         String email = user.get(UserSessionManager.KEY_EMAIL);
 
       //  tHome.setText(Html.fromHtml("User: <b>" + email + "</b>"));
-        tHome.setText(Html.fromHtml(""));
+    //    tHome.setText(Html.fromHtml(""));
     }
 
     @Override
@@ -69,6 +67,7 @@ public class MainActivity extends ActionBarActivity
         switch (position){
             case 0:
                 mTitle = getString(R.string.home);
+                obj  = new HomeFragment();
                 break;
             case 1:
                 mTitle = getString(R.string.harmonogram);
@@ -83,7 +82,7 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 3:
                 mTitle = getString(R.string.message);
-                obj = new MessageFragment();
+                obj = new DocumentsFragment();
 
                 break;
 
@@ -111,6 +110,10 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 4:
                 mTitle = getString(R.string.message);
+                break;
+            case 5:
+                mTitle = getString(R.string.materials);
+
         }
     }
 

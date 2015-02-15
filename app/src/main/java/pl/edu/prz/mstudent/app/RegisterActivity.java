@@ -21,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import pl.edu.prz.mstudent.R;
@@ -30,17 +32,12 @@ import pl.edu.prz.mstudent.utility.Utility;
 
 
 public class RegisterActivity extends Activity {
-    // Progress Dialog Object
     ProgressDialog prgDialog;
-    // Error Msg TextView Object
     TextView errorMsg;
-    // Name Edit View Object
     EditText nameET;
-    // Email Edit View Object
     EditText surnameET;
 
     EditText emailET;
-    // Passwprd Edit View Object
     EditText pwdET;
     Spinner courseSP;
     Spinner courseGrupSP;
@@ -57,16 +54,11 @@ public class RegisterActivity extends Activity {
         Typeface custom_font = Typeface.createFromAsset(getAssets(),
                 "fonts/Sketchtica.ttf");
         tx.setTypeface(custom_font);
-        // Find Error Msg Text View control by ID
         errorMsg = (TextView)findViewById(R.id.register_error);
-        // Find Name Edit View control by ID
         nameET = (EditText)findViewById(R.id.registerName);
         surnameET = (EditText)findViewById(R.id.registerSurname);
-        // Find Email Edit View control by ID
         emailET = (EditText)findViewById(R.id.registerEmail);
-        // Find Password Edit View control by ID
         pwdET = (EditText)findViewById(R.id.registerPassword);
-        // Instantiate Progress Dialog object
         courseSP = (Spinner)findViewById(R.id.courseSpinner);
         courseGrupSP = (Spinner)findViewById(R.id.courseSpinnerGroup);
 
@@ -88,12 +80,9 @@ public class RegisterActivity extends Activity {
     protected void onDestroy(){
         super.onDestroy();
     }
-    /**
-     * Method gets triggered when Register button is clicked
-     *
-     * @param view
-     */
     public void registerUser(View view){
+        String toastError = "";
+        boolean canInstert = true;
         String name = nameET.getText().toString();
         String surname = surnameET.getText().toString();
         String email = emailET.getText().toString();
@@ -102,51 +91,63 @@ public class RegisterActivity extends Activity {
         String courseGroup = courseGrupSP.getSelectedItem().toString();
 
         RequestParams params = new RequestParams();
-        // When Name Edit View, Email Edit View and Password Edit View have values other than Null
-        if(Utility.isNotNull(name) && Utility.isNotNull(email) && Utility.isNotNull(password)){
-            // When Email entered is Valid
-            if(Utility.validate(email)){
-                // Put Http parameter name with value of Name Edit View control
-                params.put("name", name);
-                params.put("surname", surname);
-                // Put Http parameter username with value of Email Edit View control
+        if(Utility.isNotNull(name) && Utility.isNotNull(email) && Utility.isNotNull(password)&& Utility.isNotNull(surname)){
+
+            if(Utility.validateEmail(email))
                 params.put("username", email);
+            else {
+                toastError = toastError + "Niepoprawny email. Użyj pełnego studenckiego email. ";
+                canInstert = false;
+            }
+            if(Utility.validateNameAndSurname(name))
+                params.put("name", name);
+            else{
+                toastError = toastError + "Niepoprawne imię. Dozwolone tylko litery, zaczynając od dużej. ";
+                canInstert = false;
+            }
+            if(Utility.validateNameAndSurname(surname))
+                params.put("surname", surname);
+            else{
+                toastError = toastError + "Niepoprawne nazwisko. Dozwolone tylko litery, zaczynając od dużej. ";
+                canInstert = false;
+            }
+            if(Utility.validatePassowrd(password)) {
+                password = md5(password);
+                params.put("password", password);
+            }else{
+                toastError = toastError + "Niepoprawne hasło. Dozwolone tylko litery oraz cyfry. Przynajmniej 5 znaków ";
+                canInstert = false;
+            }
+
                 params.put("coursename",course);
                 params.put("coursegroup", courseGroup);
-                // Put Http parameter password with value of Password Edit View control
-                params.put("password", password);
-                // Invoke RESTful Web Service with Http parameters
 
 
-                invokeWS(params);
-            }
-            // When Email is invalid
-            else{
-                Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
-            }
+                if(canInstert == true)
+                     invokeWS(params);
+                 else {
+                    errorMsg.setText(toastError);
+                    pwdET.setText("");
+                }
+
         }
-        // When any of the Edit View control left blank
         else{
-            Toast.makeText(getApplicationContext(), "Please fill the form, don't leave any field blank", Toast.LENGTH_LONG).show();
+            errorMsg.setText("Wszytkie pola muszą być uzupełnione");
         }
 
     }
 
     public void createSpecializationListView(){
 
-        // Show Progress Dialog
         prgDialog.show();
-        // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("http://mstudentservice.jelastic.dogado.eu/common/courses", new AsyncHttpResponseHandler() {
-            // When the response returned by REST has Http response code '200'
             ArrayList<Course> specialization = new ArrayList<Course>();
             ArrayList<String> courseName = new ArrayList<String>();
             ArrayList<String> specializationGroup = new ArrayList<String>();
 
             @Override
             public void onSuccess(String response) {
-                // Hide Progress Dialog
                 boolean stan = true;
                 prgDialog.hide();
                 try {
@@ -174,7 +175,6 @@ public class RegisterActivity extends Activity {
 
 
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
 
@@ -185,17 +185,13 @@ public class RegisterActivity extends Activity {
             @Override
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
-                // Hide Progress Dialog
                 prgDialog.hide();
-                // When Http response code is '404'
                 if (statusCode == 404) {
                     Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
                 }
-                // When Http response code is '500'
                 else if (statusCode == 500) {
                     Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
                 }
-                // When Http response code other than 404, 500
                 else {
                     Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
@@ -205,78 +201,85 @@ public class RegisterActivity extends Activity {
 
 
     public void invokeWS(final RequestParams params){
-        // Show Progress Dialog
         prgDialog.show();
 
-        // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         Log.d("app", params.toString());
         client.post("http://mstudentservice.jelastic.dogado.eu/register/doregister", params, new AsyncHttpResponseHandler() {
 
-            // When the response returned by REST has Http response code '200'
             @Override
             public void onSuccess(String response) {
 
-                // Hide Progress Dialog
                 prgDialog.hide();
                 try {
-                    // JSON Object
                     JSONObject obj = new JSONObject(response);
-                    // When the JSON response has status boolean value assigned with true
                     if (obj.getBoolean("status")) {
-                        // Set Default Values for Edit View controls
                         setDefaultValues();
-                        // Display successfully registered message using Toast
-                        Toast.makeText(getApplicationContext(), "You are successfully registered!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Zostałeś pomyślnie zarejestrowany!", Toast.LENGTH_LONG).show();
+                        nameET.setText("");
+                        emailET.setText("");
+                        pwdET.setText("");
+                        surnameET.setText("");
+                        Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
+                        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(loginIntent);
+
                     }
-                    // Else display error message
                     else {
                         errorMsg.setText(obj.getString("error_msg"));
                         Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
 
                 }
             }
-
-            // When the response returned by REST has Http response code other than '200'
             @Override
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
-                // Hide Progress Dialog
                 prgDialog.hide();
-                // When Http response code is '404'
                 if (statusCode == 404) {
                     Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
                 }
-                // When Http response code is '500'
                 else if (statusCode == 500) {
                     Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
                 }
-                // When Http response code other than 404, 500
                 else {
                     Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
+    public static final String md5(final String s) {
+        final String MD5 = "MD5";
+        try {
+            MessageDigest digest = java.security.MessageDigest
+                    .getInstance(MD5);
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
 
-    /**
-     * Method which navigates from Register Activity to Login Activity
-     */
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest) {
+                String h = Integer.toHexString(0xFF & aMessageDigest);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public void navigatetoLoginActivity(View view){
         Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
-        // Clears History of Activity
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(loginIntent);
     }
 
-    /**
-     * Set degault values for Edit View controls
-     */
     public void setDefaultValues(){
         nameET.setText("");
         emailET.setText("");

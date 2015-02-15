@@ -69,7 +69,7 @@
             android:id="@+id/loginEmail"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="Wprowadź studencki email"
+            android:hint="Wprowadź numer indeksu"
             android:inputType="textEmailAddress" />
 
         <TextView

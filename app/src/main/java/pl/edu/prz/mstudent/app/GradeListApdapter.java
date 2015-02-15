@@ -37,14 +37,21 @@ public class GradeListApdapter extends ArrayAdapter<Grade> {
 
 
         ImageView image = (ImageView) convertView.findViewById(R.id.gradeIcon);
-//        if(grade.grade  )
-//            image.setImageResource(R.drawable.konsultacje);
-//        else if(harmonogram.course.equals("Wykład"))
-//            image.setImageResource(R.drawable.wyklad);
-//        else if(harmonogram.course.equals("Laboratorium"))
-//            image.setImageResource(R.drawable.laboratorium);
-//        else
-        image.setImageResource(R.drawable.trojka);
+        if(grade.grade == 2) {
+            image.setImageResource(R.drawable.ocena2);
+        }
+        else if(grade.grade == 3)
+            image.setImageResource(R.drawable.ocena3);
+        else if(grade.grade == 3.5)
+            image.setImageResource(R.drawable.ocena3_2);
+        else if(grade.grade == 4)
+            image.setImageResource(R.drawable.ocena4);
+        else if(grade.grade == 4.5)
+            image.setImageResource(R.drawable.ocena4_2);
+        else if(grade.grade == 5)
+            image.setImageResource(R.drawable.ocena5);
+        else
+            image.setVisibility(View.GONE);
         return convertView;
 
     }
